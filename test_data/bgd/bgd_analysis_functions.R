@@ -1,10 +1,17 @@
-select_mulitpleify<-function(x){
+
+select_mulitpleify<-function(x, keep.values = T){
   separated<-lapply(unique(x),function(uniquex){
-    x==uniquex
+    equals<-x==uniquex
+    newvec<-rep("other",length(equals))
+    newvec[which(equals)]<-uniquex
+    newvec
   }) %>% as.data.frame
   colnames(separated)<-unique(x)
+
   return(separated)
 }
+
+
 
 
 
@@ -42,7 +49,7 @@ apply_data_analysis_plan<-function(data,analysisplan){
     }
     )
 
-  names(results)<-analysisplan$dependent.var
+  names(results)<-paste(analysisplan$dependent.var)
   return(results)
 
 }
@@ -89,11 +96,11 @@ map_list_of_results_to_dataframe<-function(analysis_indicator_results){
     return(result$hypothesis.test$result$p.value)
   }
 
-  sumstats <- nameapply(sumstatlist,function(x,name){
+  sumstats <- lapply(1:length(sumstatlist),function(x){
 
 
     if (!is.null(x)) {
-      cbind(indicator=name,"p value"=getpval(analysis_indicator_results[[name]]),"test type"= analysis_indicator_results[[name]]$hypothesis.test$name, x)
+      cbind(indicator=names(sumstatlist)[x],"p value"=getpval(analysis_indicator_results[[x]]),"test type"= analysis_indicator_results[[x]]$hypothesis.test$name, sumstatlist[[x]])
     }
   })  %>%  do.call(rbind,.)
 

@@ -28,20 +28,22 @@ result_table$indicator <- gsub("\\."," ",result_table$indicator)
 
 split_by_gender<-result_table %>% split.data.frame(result_table$independent.var.value)
 
-gender_as_cols<-data.frame("Indicator"=split_by_gender$Female$indicator,
-                           "Answer choice"=split_by_gender$Female$dependent.var.value,
-                           "p-Value" = split_by_gender$Female$`p value`,
-                           "test name" = split_by_gender$Female$`test type`,
-                           "Number Female HHH" = split_by_gender$Female$numbers,
-                           "Numbers Male HHH"=split_by_gender$Male$numbers) %>% head
+comparison_horizontal<-data.frame(split_by_gender$`Male`,"female"=split_by_gender$`Female`$numbers)
+comparison_horizontal$absolute.difference<-comparison_horizontal$numbers - comparison_horizontal$female
+comparison_horizontal$percent.difference<- comparison_horizontal$absolute.difference / comparison_horizontal$female
+comparison_horizontal$percent.difference[grep("Pearson's",comparison_horizontal$test.type)]<-NA
 
 
-gender_as_cols$absolut.difference<-abs(gender_as_cols$Numbers.Male.HHH-gender_as_cols$Number.Female.HHH)
+comparison_horizontal$adjusted.p.value<-comparison_horizontal$p.value*nrow(analysisplan)
+comparison_horizontal$significant.at.005<-comparison_horizontal$adjusted.p.value<0.05
+diff_comb<-comparison_horizontal$percent.difference
+diff_comb[is.na(diff_comb)]<-comparison_horizontal$absolute.difference[is.na(diff_comb)]
+# comparison_horizontal$difference.over.7.percent <- abs(diff_comb)>0.07
+# comparison_horizontal$significant.and.large.difference<-comparison_horizontal$difference.over.7.percent & comparison_horizontal$significant.at.005
 
-gender_as_cols %>% write.csv("male_vs_female.csv")
 
 
 
-
-result_table %>% write.csv("gender_comparison.csv")
+comparison_horizontal %>% glimpse
+comparison_horizontal %>% write.csv("comparison_raw.csv")
 
