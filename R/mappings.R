@@ -33,14 +33,19 @@ map_to_design <- function(data,
 #' @return a string that other functions can use to know what analysis case they are dealing with. It has a class "analysis_case" assigned
 #' @examples map_to_design(data,cluster.var="cluster_id")
 #' @export
-map_to_case<-function(data,
+map_to_case<-function(data, 
                       hypothesis.type,
                       dependent.var,
                       independent.var = NULL,
-                      paired = NULL){
-  variable.type <- paste0(reachR:::variable_type(dependent.var), "_", reachR:::variable_type(independent.var))
+                      paired = NULL,
+                      independent.var.type = NULL,
+                      dependent.var.type = NULL){
+  if(questionnaire_is_loaded){
+  variable.type <- paste0(reachR:::variable_type(data[[dependent.var]]), "_", reachR:::variable_type(data[[independent.var]]))}else{
+    warning("we strongly recommend loading the questionnaire from Kobo. The method used now might throw errors in converting variables")
+  variable.type <- paste0(ifelse(is.numeric(data[[dependent.var]]),"numerical_","categorical_"), ifelse(is.numeric(data[[dependent.var]]), "numerical","categorical"))}
   case <- paste(c("CASE",hypothesis.type,variable.type, paired), collapse = "_")
-  class(case)<-"analysis_case"
+  class(case)<- "analysis_case"
   return(case)
 }
 

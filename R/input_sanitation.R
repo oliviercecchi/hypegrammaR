@@ -1,6 +1,7 @@
-
-
-
+change_Excel_REF_to_NA <- function(data){
+  data[data == "#REF!"] <- NA
+  return(data)
+}
 
 
 
@@ -33,6 +34,29 @@ sanitise_group_difference<-function(data,dependent.var,independent.var){
   }
 
   return(list(success=TRUE,data=data))
+}
+
+
+###E counts numerical variables as categorical :( (nb.rooms)). How do I get data to read in as an agrument
+load_analysis_plan <- function(data, 
+                               analysis.plan.file, 
+                               independent.var.column, 
+                               dependent.var.column, 
+                               hypothesis.column, 
+                               disaggregation.variable){
+insure.is.single.value(analysis.plan.file)
+insure.is.single.value(independent.var.column)
+insure.is.single.value(dependent.var.column)
+insure.is.single.value(hypothesis.column)
+
+ap_raw <- reachR:::read.csv.auto.sep(analysis.plan.file, stringsAsFactors = F, 
+                            header = T)
+dependent.var.column <- reachR:::to_alphanumeric_lowercase(dependent.var.column)
+independent.var.column <- reachR:::to_alphanumeric_lowercase(independent.var.column)
+hypothesis.column <- reachR:::to_alphanumeric_lowercase(hypothesis.column)
+case_vector <- mapply(map_to_case, ap_raw[[hypothesis.column]], ap_raw[[dependent.var.column]], ap_raw[[independent.var.column]]) %>% unlist
+ap_case <- data.frame(ap_raw, case_vector, stringsAsFactors = F) 
+return(ap_case)
 }
 
 

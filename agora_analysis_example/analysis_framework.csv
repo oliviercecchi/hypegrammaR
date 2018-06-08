@@ -1,0 +1,10 @@
+Disaggregate;Research Question (RQ);Theme;IN #;Demand / Supply;Data collection method;Sub Research Question;Indicator / Variable;hypothesis type;dependent variable;independent variable;
+stratum;What aer the and patterns dynamics of access to shelter in the target areas?;Housing, Land and Property Rights;13;Supply;HH ;What types of housing are people living in?;Type of accomodation;group_difference;dwelling.type;interval.income;
+stratum;;;14;;HH ;;Dwelling material types;group_difference;house.mat;interval.income;
+stratum;;;14;;HH ;;condition of shelter observed by enumerators;group_difference;shelter.conditions;interval.income;
+stratum;;;15;;HH ;;nb of rooms;group_difference;nb.rooms;interval.income;
+stratum;;;19;;HH ;What are the dynamics of eviction in the area;proportion of pple who declare eviction is common;group_difference;eviction.common;hh.head.sex;
+;;;22;;HH;;proportion of people declaring eviction is a threat;direct_reporting;eviction.threat;;
+;;;23;;HH;To what extent natural disasters pose a threat to inhabitants;proportion of inhabitants declaring a threat of natural disasters;;;;
+;;;24;;HH;;proportion of inhabitants declaring a threat of flooding;;;;
+;;;25;;HH;;location of pple declaring a threat of flooding;;;;
